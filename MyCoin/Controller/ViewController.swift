@@ -17,7 +17,7 @@ class ViewController: UIViewController{
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     
     var coinManager = CoinManager()
-    
+    private var globalSelectedCurrency = "AUD"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,10 +33,11 @@ class ViewController: UIViewController{
         case 0:
             dateLabel.text = "BTC";
             dateLabel.backgroundColor = .orange;
-            
+            coinManager.getCoinPrice(for: globalSelectedCurrency, base: "BTC")
         case 1:
             dateLabel.text = "ETH";
             dateLabel.backgroundColor = .systemGreen;
+            coinManager.getCoinPrice(for: globalSelectedCurrency, base: "ETH")
                 //UIColor(displayP3Red: 51, green: 51, blue: 255, alpha: 0.7);
         default:
             break
@@ -78,6 +79,7 @@ extension ViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         let selectedCurrency = coinManager.currencyArray[row]
+        globalSelectedCurrency = selectedCurrency
         if segmentedControl.selectedSegmentIndex == 0 {
             coinManager.getCoinPrice(for: selectedCurrency, base: "BTC")
         } else {
